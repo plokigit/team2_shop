@@ -22,7 +22,7 @@ table, th, td {
 	padding: 2px;
 }
 
-input{
+input#btn{
 	width: 50px; 
 }
 </style>
@@ -32,8 +32,31 @@ input{
 		f.submit();
 	}
 	function delete_cart(f) {
+		var chkbox = document.querySelectorAll('.del_chk');
+		
+		var bool_idx = new Array();
+		for(var i = 0; i< chkbox.length; i++){
+			bool_idx.push(i);
+		}
+		
+		f.idx.value=bool_idx;
 		f.action="/MyController?cmd=deleteCart";
 		f.submit();
+	}
+	function selectAll()  {
+		var chkbox = document.querySelectorAll('.del_chk');
+		
+		
+		 if(document.getElementById("all_check").checked==true){
+			 
+			 for(var x=0; x<chkbox.length; x++){
+				 chkbox[x].checked = true;
+			 }
+		 }else{
+			 for(var x=0; x<chkbox.length; x++){				 
+				 chkbox[x].checked = false;
+			 }
+		 }
 	}
 </script>
 </head>
@@ -45,12 +68,12 @@ input{
 		<caption><h2> :: 장바구니 내용 :: </h2></caption>
 		<thead>
 			<tr bgcolor="#dedede">
+				<th style="width: 15%;"><input type="checkbox" name="del_idx" id="all_check" value="all" onclick=selectAll()>전체선택</th>
 				<th style="width: 10%">제품번호</th>
 				<th style="width: 20%">제품명</th>
 				<th style="width: 20%">단가</th>
 				<th style="width: 20%">수량</th>
 				<th style="width: 15%">금액</th>
-				<th style="width: 10%">삭제</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -63,6 +86,7 @@ input{
 				<c:otherwise>
 					<c:forEach var="k" items="${list }">
 					<tr>
+						<td><input class="del_chk" type="checkbox" value="${k.idx}" name="del_idx"></td>
 						<td>${k.p_num }</td>
 						<td>${k.p_name }</td>
 						<td>시중가 : <fmt:formatNumber value="${k.p_price }" pattern="#,###" /> 원 <br>
@@ -70,20 +94,13 @@ input{
 						</td>
 						<td>
 							<form method="post">
-								<input type="number" name="su" value="${k.quant}" >
-								<input type="hidden" name="idx" value="${k.idx}">
-								<input type="hidden" name="m_idx" value="${m_idx}">
-								<input type="button" value="수정" onclick="edit_cart(this.form)">
+								<input id = "btn" type="number" name="su" value="${k.quant}" >
+								<input id = "btn" type="hidden" name="idx" value="${k.idx}">
+								<input id = "btn" type="hidden" name="m_idx" value="${m_idx}">
+								<input id = "btn" type="button" value="수정" onclick="edit_cart(this.form)">
 							</form>
 						</td>
 						<td><fmt:formatNumber value="${k.totalPrice }" pattern="#,###" /> 원</td>
-						<td>
-							<form method="post">
-								<input type="hidden" name="idx" value="${k.idx}">
-								<input type="hidden" name="m_idx" value="${m_idx}">
-								<input type="button" value="삭제" onclick="delete_cart(this.form)">
-							</form>
-						</td>
 					</tr>	
 					</c:forEach>
 				</c:otherwise>
@@ -93,6 +110,11 @@ input{
 			<tr style="text-align: right;">
 				<td colspan="6" style="padding-right: 50px;">
 					<h2> 총 결재액 : <fmt:formatNumber value="${total}" pattern="#,###" /> 원</h2>
+					<form method="post">
+						<input id = "btn" type="button" value="삭제" onclick="delete_cart(this.form)">
+						<input type="hidden" name="idx" >
+						<input type="hidden" name="m_idx" value="${m_idx}">								
+					</form>
 				</td>
 			</tr>
 		</tfoot>

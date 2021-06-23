@@ -87,7 +87,7 @@ table, th, td {
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<input type="button" value="장바구니에 담기" onclick="add_cart()" /> 
+				<input type="button" value="장바구니에 담기" onclick="add_cart()" />
 				<input type="button" value="장바구니 보기" onclick="show_cart()" />
 			</td>
 		</tr>

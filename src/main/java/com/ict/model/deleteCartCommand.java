@@ -12,7 +12,13 @@ public class deleteCartCommand implements Command{
 		String idx = request.getParameter("idx");
 		String m_idx = request.getParameter("m_idx");
 		
+		String[] idx2 = idx.split(",");
+		
+		System.out.println(idx2[0]);
+		
 		CVO cvo = new CVO();
+		
+	
 		
 		cvo.setP_idx(Integer.parseInt(idx));
 		cvo.setM_idx(Integer.parseInt(m_idx));
